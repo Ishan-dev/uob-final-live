@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Salon Prasanga | Hair</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+
+ 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Beauty Salon Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+	<script type="application/x-javascript">
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+
+  <!-- Bootstrap core CSS -->
+  
+
+  
+
+
+  <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<!--// Bootstrap-CSS -->
+	<link href="css/font-awesome.css" rel="stylesheet">
+	<!--// Font-Awesome-CSS -->
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- //Style Sheets -->
+	<!-- web-fonts -->
+	<link href="//fonts.googleapis.com/css?family=Khula:300,400,600,700,800" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,400,400i,500,500i,600,600i,700,700i,800" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+  
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="device-mockups/device-mockups.min.css">
+  <link href="css/new-age.css" rel="stylesheet">
+ 
+
+  <!-- Bootstrap core CSS -->
+  
+
+ 
+  
+ 
+
+  
+
+  <script type="text/javascript" src="brython.js"></script>
+  <script type="text/javascript" src="brython_stdlib.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+</head>
+
+<body id="page-top" onload="brython(1)">
+    <script type="text/python3">
+from browser import document, ajax
+import json
+import warnings
+
+
+def show_results(response):
+    if response.status == 200:
+        response_data = json.loads(response.text)
+        img_filename = response_data["img_filename"]
+        document["output_image"].html = f'<img src="/{img_filename}" />'
+    else:
+        document["output_image"].html = f"Error: {response.text}"
+
+
+def show_face_shape(response):
+    if response.status == 200 or response.status == 0:
+        print(response)
+        shape = json.loads(response.text)
+        document["display_user_face_shape"].html = (
+            "Face Shape: " + shape["face_shape"].title()
+        )
+    else:
+        warnings.warn(response.text)
+
+
+def get_prediction(ev):
+    """Get the predicted probability."""
+    document["output_image"].html = "Predicting..."
+    req = ajax.ajax()
+    req.bind("complete", show_results)
+    req.open("POST", "/predict", True)
+    req.set_header("content-type", "application/json")
+    data = json.dumps(
+        {
+            "file_name": document["uploadfilename"].value,
+            "person_see_up_dos": document["personseeupdos"].value,
+            "person_hair_length": document["personhairlength"].value,
+        }
+    )
+    req.send(data)
+
+
+def get_face_shape(ev):
+    """Get the user face shape."""
+    req = ajax.ajax()
+    req.bind("complete", show_face_shape)
+    req.open("POST", "/predict_user_face_shape", True)
+    req.set_header("content-type", "application/json")
+    data = json.dumps({"file_name": document["uploadfilename"].value})
+    req.send(data)
+
+
+document["predict_button"].bind("click", get_prediction)
+document["predict_face_shape"].bind("click", get_face_shape)
+      
+    </script>
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[type="file"]').change(function(e){
+                var preview = document.querySelector('.img-upload-pic'); //selects the query named img
+                var file    = document.querySelector('input[type=file]').files[0]; 
+                var predict_button_click = document.getElementById("predict_button");
+                var find_face_shape = document.getElementById("predict_face_shape");
+
+                var reader  = new FileReader();
+                reader.onloadend = function () {
+                  preview.src = reader.result;
+                  $("#uploadfilename").val(file.name)
+                  predict_button_click.style.color = "black";
+                  predict_button_click.style.borderColor = "black";
+                  document.querySelector('#featuressection').click();
+                  find_face_shape.click();
+                }
+              if (file) {
+                reader.readAsDataURL(file); //reads the data as a URL
+              } else {
+                preview.src = "";
+                predict_button_click.style.color = "white";
+                predict_button_click.style.borderColor = "white";
+              }
+            });
+        });
+      </script>
+  
+
+  <div class="banner-1 jarallax" id="home">
+		<header>
+			<div class="container">
+				<div class="header-bottom-agileits">
+					<div class="w3-logo">
+						<h1><a href="/">Salon Prasanga</a></h1>
+					</div>
+					<div class="nav-contact-w3ls">
+						<p>(+94)77 2286512<span class="fa fa-phone" aria-hidden="true"></span></p>
+						<p class="para-y"><a href="/contact">Get More info</a></p>
+					</div>
+					<div class="address">
+						<p>ADMIN LOGIN</p>
+						<p class="para-y"><a href="/login">Sign In here</a></p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</header>
+    <!-- navigation -->
+  
+	<div class="nav-bg">
+		<div class="container">
+			<nav class="navbar navbar-default shift">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					    aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="/">Home</a></li>
+						<li><a href="/about">About</a></li>
+						<li><a href="/services">Services</a></li>
+						<li><a href="/appointment">Appoinment</a></li>
+						<li><a href="/gallery">Gallery</a></li>
+						<li><a href="/contact">Contact</a></li>
+					</ul>
+
+				</div>
+				<!-- /.navbar-collapse -->
+
+			</nav>
+		</div>
+  </div>
+</div>
+
+
+
+  <section class="download bg-primary text-center" id="download">
+    
+    <div class="container">
+      <div class="section-heading text-center">
+        <h2>Discover a new hair style!</h2>
+        
+       
+            
+        
+            <p style="
+                font-family: Catamaran,Helvetica,Arial,sans-serif;
+                font-weight: 200;
+                letter-spacing: 1px;
+                font-size: 30px;
+                margin-top: 0;
+                text-align: center;
+            ">Upload Photo!</p>
+          
+           <input type="file" class="filenameupload" name="file" style="
+                font-size: 1.25em;
+                font-weight: 700;
+                color: white;
+                background-color: black;
+                display: inline-block;
+                cursor: pointer;
+           ">
+           <a href="#features" id="featuressection" style="visibility: hidden;"></a>
+           <input type="hidden" id="uploadfilename" name="hiddenfilename" value="" />
+           <input type="hidden" id="recommendimages" name="hiddenrecommendimages" value="" />
+           
+          
+        <hr>
+      </div> 
+    </div>
+    
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-heading text-center">
+        <h2>Unlimited Features, Unlimited Fun</h2>
+        <p class="text-muted">Check out what you can do with this system!</p>
+        <hr>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 my-auto">
+          <div class="device-container">
+            <div class="device-mockup iphone6_plus portrait white">
+              <div class="device" style="max-height: 500px;">
+                <div class="screen">
+                  
+                  <img src="img/imm.png" class="img-fluid img-upload-pic" alt="">
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 my-auto">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="feature-item">
+                  <!-- <i class="icon-screen-smartphone text-primary"></i> -->
+                  <div id="display_user_face_shape" style="font-family: Catamaran,Helvetica,Arial,sans-serif;
+                  font-size: 1.25rem;"></div>
+                  <h5>What is your name</h5>
+                  <input type="text" name="name" id="personname"> 
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="feature-item">
+                    <h5>Would you like to see up-dos? (Y/N)</h5>
+                    <input type="radio" id="" name="yesno" value="yes">
+                    <label for="age1">Yes</label>
+                    <input type="radio" id="" name="yesno" value="no">
+                    <label for="age2">No</label>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="feature-item">
+                    <h5>If No, Is your hair short (shoulder-length shorter) or long?</h5>
+                    <input type="radio" id="" name="shortlong" value="short">
+                    <label for="short">Short</label>
+                    <input type="radio" id="" name="shortlong" value="long">
+                    <label for="long">Long</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="feature-item">
+                     <button id="predict_button" class="btn btn-outline btn-xl js-scroll-trigger" onclick="test()">Predict</button>
+                     <button id="predict_face_shape" style="border-color: white;"></button>
+                 
+              <script>
+                  function test() {
+                    var radios1 = document.getElementsByName("yesno");
+                    var found = 1;
+                    for (var i = 0; i < radios1.length; i++) {       
+                        if (radios1[i].checked) {
+
+                            radios1[i].id = "personseeupdos";
+                            found = 0;
+                            break;
+                        }
+
+                    }
+                    if(found == 1)
+                    {
+                    alert("Please Select updos");
+                    } 
+
+                    var radios2 = document.getElementsByName("shortlong");
+                    var found2 = 1;
+                    for (var i = 0; i < radios2.length; i++) {       
+                        if (radios2[i].checked) {
+
+                            radios2[i].id = "personhairlength";
+                            found2 = 0;
+                            break;
+                        }
+                    }
+                    if(found2 == 1)
+                    {
+                    alert("Please Select Hair Length");
+                    } 
+
+                    radios1.id="";
+                    radios2.id="";  
+                }
+              </script>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-content">
+      <div class="container">
+        <h1 style="color: white;">See you hair cut</h1>
+        <div id="output_image"></div>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  </section>
+
+  
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/new-age.min.js"></script>
+
+</body>
+
+</html>
